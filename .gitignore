@@ -1,1 +1,13 @@
 /videos2/
+/videos/
+/valData.npy
+/uniformer_base_k600_32x4.pth
+/trainData.npy
+/venv/
+/test_videos/
+/videosLimited/
+.idea/
+*.pyo
+*.pyc
+*.pth
+*.pkl

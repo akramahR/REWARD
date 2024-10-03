@@ -49,6 +49,7 @@ def preprocess_video_segment(video_path, start_time, end_time, video_fps=32, tar
             frame = frame[crop_y:crop_y + crop_size, crop_x:crop_x + crop_size]
             # Resize the frame to the target size
             frame = cv2.resize(frame, target_size)
+            frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
             frames.append(frame)
 
             # todo: delete
@@ -75,7 +76,9 @@ def preprocess_video_segment(video_path, start_time, end_time, video_fps=32, tar
         elif len(frames) > FIXED_FRAMES:
             frames = frames[:FIXED_FRAMES]
 
-    return frames
+    tensor = processFramesToTensor(frames)
+
+    return tensor
 
 
 def processFramesToTensor(frames):

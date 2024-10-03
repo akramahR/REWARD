@@ -1,3 +1,4 @@
+from preprocessing import load_video_paths_and_labels
 from videoGenerator import *
 
 import torch
@@ -11,6 +12,7 @@ from slowfast.models import build_model
 import os
 import numpy as np
 from UTILS import Identity
+import pickle
 
 # Define constants
 FIXED_FRAMES = 32
@@ -26,7 +28,7 @@ video_paths, labels, start_times, end_times, fps_list = load_video_paths_and_lab
 # Filter out videos with less than 10 occurrence of a label
 from collections import Counter
 label_counts = Counter(labels)
-rare_labels = [label for label, count in label_counts.items() if count < 10]
+rare_labels = [label for label, count in label_counts.items() if count < 15]
 filtered_indices = [i for i, label in enumerate(labels) if label not in rare_labels]
 
 video_paths = [video_paths[i] for i in filtered_indices]
@@ -40,6 +42,9 @@ label_encoder = LabelEncoder()
 labels_encoded = label_encoder.fit_transform(labels)
 num_classes = len(np.unique(labels_encoded))
 
+# Save the label encoder
+with open('label_encoder.pkl', 'wb') as f:
+    pickle.dump(label_encoder, f)
 
 # Split data into training and validation sets
 from sklearn.model_selection import train_test_split

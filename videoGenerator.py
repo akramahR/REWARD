@@ -1,5 +1,5 @@
 import numpy as np
-from preprocessing import preprocess_video_segment, load_video_paths_and_labels, processFramesToTensor
+from preprocessing import preprocess_video_segment
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.utils import Sequence
@@ -32,9 +32,7 @@ class VideoDataGenerator(Sequence):
         fps = self.fps_list[index]
 
         # Preprocess video segment
-        video_segment = preprocess_video_segment(video_path, start_time, end_time, fps, target_size=self.target_size, target_fps=self.target_fps)
-
-        tensor = processFramesToTensor(video_segment)
+        tensor = preprocess_video_segment(video_path, start_time, end_time, fps, target_size=self.target_size, target_fps=self.target_fps)
 
         # Create a one-hot encoded label
         categorical = to_categorical(label, num_classes=len(self.label_encoder.classes_))
